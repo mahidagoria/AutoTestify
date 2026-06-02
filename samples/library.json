@@ -1,0 +1,153 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Library Books API",
+    "description": "A sample specification file to manage library books store.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5001/api",
+      "description": "Mock Backend Local Server"
+    }
+  ],
+  "paths": {
+    "/books": {
+      "get": {
+        "summary": "List all books",
+        "description": "Returns a list of books currently in store",
+        "operationId": "listBooks",
+        "parameters": [
+          {
+            "name": "genre",
+            "in": "query",
+            "description": "Filter by book genre",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of books retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new book",
+        "description": "Adds a book to the store inventory",
+        "operationId": "createBook",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Book created successfully"
+          },
+          "400": {
+            "description": "Invalid input book payload"
+          }
+        }
+      }
+    },
+    "/books/{bookId}": {
+      "get": {
+        "summary": "Get book details",
+        "description": "Returns details of a book matching the identifier",
+        "operationId": "getBookById",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the book to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book details response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a book",
+        "description": "Removes a book from store",
+        "operationId": "deleteBook",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the book to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book deleted successfully"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Book": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "author"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "978-3-16-148410-0"
+          },
+          "title": {
+            "type": "string",
+            "example": "The Great Gatsby"
+          },
+          "author": {
+            "type": "string",
+            "example": "F. Scott Fitzgerald"
+          },
+          "genre": {
+            "type": "string",
+            "example": "Fiction"
+          }
+        }
+      }
+    }
+  }
+}
